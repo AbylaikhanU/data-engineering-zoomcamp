@@ -27,7 +27,7 @@ default_args = {
 # NOTE: DAG declaration - using a Context Manager (an implicit way)
 with DAG(
     dag_id="gcs_2_bq_dag",
-    schedule_interval="@daily",
+    schedule_interval="@once",
     default_args=default_args,
     catchup=False,
     max_active_runs=1,
@@ -38,10 +38,10 @@ with DAG(
         move_files_gcs_task = GCSToGCSOperator(
             task_id=f'move_{colour}_{DATASET}_files_task',
             source_bucket=BUCKET,
-            source_object=f'{INPUT_PART}/{colour}_{DATASET}*.{INPUT_FILETYPE}',
+            source_object=f'dtc_data_lake_de-zcamp-1234/raw/{colour}_{DATASET}*',
             destination_bucket=BUCKET,
-            destination_object=f'{colour}/{colour}_{DATASET}',
-            move_object=True
+            destination_object=f'dtc_data_lake_de-zcamp-1234/{colour}/{colour}_{DATASET}',
+            move_object=False
         )
 
         bigquery_external_table_task = BigQueryCreateExternalTableOperator(
@@ -54,7 +54,7 @@ with DAG(
                 },
                 "externalDataConfiguration": {
                     "autodetect": "True",
-                    "sourceFormat": f"{INPUT_FILETYPE.upper()}",
+                    "sourceFormat": f"'{INPUT_FILETYPE.upper()}'",
                     "sourceUris": [f"gs://{BUCKET}/{colour}/*"],
                 },
             },

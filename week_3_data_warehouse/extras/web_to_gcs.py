@@ -41,12 +41,13 @@ def web_to_gcs(year, service):
         month = month[-2:]
 
         # csv file_name 
-        file_name = service + '_tripdata_' + year + '-' + month + '.csv'
-
+        file_name = service + '_tripdata_' + year + '-' + month + '.parquet'
+        
         # download it using requests via a pandas df
         request_url = init_url + file_name
         r = requests.get(request_url)
         pd.DataFrame(io.StringIO(r.text)).to_csv(file_name)
+
         print(f"Local: {file_name}")
 
         # read it back into a parquet file
@@ -62,5 +63,5 @@ def web_to_gcs(year, service):
 
 web_to_gcs('2019', 'green')
 web_to_gcs('2020', 'green')
-# web_to_gcs('2019', 'yellow')
-# web_to_gcs('2020', 'yellow')
+web_to_gcs('2019', 'yellow')
+web_to_gcs('2020', 'yellow')
