@@ -40,22 +40,27 @@ def change_dtype(local_file):
     raw_table = pq.read_table(local_file)
     df_raw = raw_table.to_pandas()
     schema = {
-        'VendorID':pa.int64(),
-        'tpep_pickup_datetime':pa.timestamp('ns'),
-        'tpep_dropoff_datetime':pa.timestamp('ns'),
-        'passenger_count':pa.float64(),
-        'trip_distance':pa.float64(),
-        'RatecodeID':pa.float64(),
-        'store_and_fwd_flag':pa.string(),
-        'PULocationID':pa.int64(),
-        'DOLocationID':pa.int64(),
-        'payment_type':pa.int64(),
-        'fare_amount':pa.float64(),
-        'extra':pa.float64(),
-        'mta_tax':pa.float64(),
-        'tip_amount':pa.float64()
+        'VendorID': pa.int64(),
+        'tpep_pickup_datetime': pa.timestamp('ns'),
+        'tpep_dropoff_datetime': pa.timestamp('ns'),
+        'passenger_count': pa.float64(),
+        'trip_distance': pa.float64(),
+        'RatecodeID': pa.float64(),
+        'store_and_fwd_flag': pa.string(),
+        'PULocationID': pa.int64(),
+        'DOLocationID': pa.int64(),
+        'payment_type': pa.int64(),
+        'fare_amount': pa.float64(),
+        'extra': pa.float64(),
+        'mta_tax': pa.float64(),
+        'tip_amount': pa.float64(),
+        'tolls_amount': pa.float64(),
+        'improvement_surcharge': pa.float64(),
+        'total_amount': pa.float64(),
+        'congestion_surcharge': pa.float64(),
+        'airport_fee': pa.float64()
     }
-    
+
     fields = [pa.field(x, y) for x, y in schema.items()]
     new_schema = pa.schema(fields)
 
